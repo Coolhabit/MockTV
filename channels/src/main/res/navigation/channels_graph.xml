@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/channels_graph"
+    app:startDestination="@id/fragment_channels_base">
+
+    <fragment
+        android:id="@+id/fragment_channels_base"
+        android:name="com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment"
+        tools:layout="@layout/fragment_channels_base">
+    </fragment>
+
+</navigation>

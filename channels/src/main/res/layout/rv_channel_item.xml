@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/rv_card_bg"
+    app:cardCornerRadius="@dimen/size_10"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/channel_logo"
+            android:layout_width="@dimen/size_60"
+            android:layout_height="@dimen/size_0"
+            android:layout_margin="@dimen/size_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/channel_name"
+            style="@style/White18TextStyle"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/size_16"
+            android:layout_marginEnd="@dimen/size_6"
+            app:layout_constraintBottom_toTopOf="@id/current_program"
+            app:layout_constraintStart_toEndOf="@id/channel_logo"
+            app:layout_constraintEnd_toStartOf="@id/fav_btn"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Channel name" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/current_program"
+            style="@style/White15TextStyle"
+            android:layout_width="@dimen/size_0"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/fav_btn"
+            android:layout_marginEnd="@dimen/size_6"
+            app:layout_constraintStart_toStartOf="@id/channel_name"
+            app:layout_constraintTop_toBottomOf="@id/channel_name"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Current program" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/fav_btn"
+            android:layout_width="@dimen/size_24"
+            android:layout_height="@dimen/size_24"
+            android:layout_marginEnd="@dimen/size_16"
+            android:src="@drawable/ic_star"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
