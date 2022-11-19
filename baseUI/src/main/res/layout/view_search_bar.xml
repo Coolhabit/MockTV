@@ -4,33 +4,40 @@
     android:id="@+id/constraintRootSearch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/rv_card_bg"
     android:elevation="@dimen/size_0"
     android:translationZ="@dimen/size_0">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_input_layout"
+        style="@style/InputTextBox"
         android:layout_width="@dimen/size_0"
-        android:layout_height="@dimen/size_40"
-        android:layout_marginVertical="@dimen/size_16"
-        android:layout_marginEnd="@dimen/size_8"
-        android:paddingStart="@dimen/size_8"
+        android:layout_height="@dimen/size_60"
+        android:layout_marginEnd="@dimen/size_24"
+        android:layout_marginBottom="@dimen/size_6"
+        android:paddingStart="@dimen/size_24"
+        app:boxStrokeWidth="@dimen/size_0"
+        app:boxStrokeWidthFocused="@dimen/size_0"
         app:endIconMode="clear_text"
-        android:elevation="@dimen/size_0"
-        android:translationZ="@dimen/size_0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="spread">
+        app:layout_constraintWidth_default="spread"
+        app:placeholderText="@string/search_placeholder"
+        app:startIconDrawable="@drawable/ic_search"
+        app:startIconTint="@color/input_hint_grey">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/search_input"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
             android:paddingVertical="@dimen/size_10"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textCursorDrawable="@null" />
     </com.google.android.material.textfield.TextInputLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

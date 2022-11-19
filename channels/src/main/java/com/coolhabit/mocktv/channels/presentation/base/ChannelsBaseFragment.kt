@@ -16,7 +16,7 @@ class ChannelsBaseFragment : BaseFragment(R.layout.fragment_channels_base) {
         const val FAV_TAB = 1
     }
 
-    private lateinit var binding: FragmentChannelsBaseBinding
+    lateinit var binding: FragmentChannelsBaseBinding
     private val viewModel by viewModels<ChannelsBaseViewModel>()
     private lateinit var adapter: ChannelsViewPagerAdapter
 

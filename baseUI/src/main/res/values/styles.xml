@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
         <item name="tabIndicatorAnimationMode">elastic</item>
         <item name="tabMode">scrollable</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextColor">@color/input_hint_grey</item>
+        <item name="tabIndicatorColor">@color/blue_select</item>
+    </style>
+
+    <style name="InputTextBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:paddingTop">@dimen/size_20</item>
+        <item name="errorEnabled">false</item>
+        <item name="placeholderTextColor">@color/input_hint_grey</item>
+        <item name="boxCornerRadiusBottomEnd">@dimen/size_16</item>
+        <item name="boxCornerRadiusBottomStart">@dimen/size_16</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/size_16</item>
+        <item name="boxCornerRadiusTopStart">@dimen/size_16</item>
+        <item name="boxBackgroundColor">@color/input_grey</item>
+        <item name="hintTextColor">@color/input_hint_grey</item>
     </style>
 </resources>

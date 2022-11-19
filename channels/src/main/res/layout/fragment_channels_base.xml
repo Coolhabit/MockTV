@@ -21,6 +21,7 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             style="@style/TabLayoutStyle"
+            android:background="@color/rv_card_bg"
             android:layout_width="match_parent"
             android:layout_height="@dimen/size_35"
             app:layout_scrollFlags="noScroll|enterAlways" />

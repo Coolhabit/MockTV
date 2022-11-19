@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolhabit.mocktv.baseUI.adapter.ItemDecoration
@@ -11,6 +12,7 @@ import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsListBinding
 import com.coolhabit.mocktv.channels.presentation.adapter.TvChannelAdapter
+import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
