@@ -35,4 +35,8 @@ class ChannelsUseCase @Inject constructor(
     suspend fun removeChannelFromFav(channel: TvChannel) {
         database.removeChannelFromFavorite(channel)
     }
+
+    suspend fun loadChannelById(channelId: Int): TvChannel {
+        return channelApi.getChannelById(channelId)
+    }
 }

@@ -7,19 +7,14 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolhabit.mocktv.baseUI.adapter.ItemDecoration
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
+import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsListBinding
 import com.coolhabit.mocktv.channels.presentation.adapter.TvChannelAdapter
-import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragmentDirections
-import com.coolhabit.mocktv.channels.presentation.extensions.toUiModel
-import com.coolhabit.mocktv.baseUI.model.TvChannelUI
 import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
@@ -85,34 +80,25 @@ class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
             }
         }
 
-        channelsAdapter.onCardClick = {
-            toStream(it.toUiModel())
+        channelsAdapter.onCardClick = { id ->
+            viewModel.navigateToTvStream(id)
         }
         channelsAdapter.onFavClick = {
             viewModel.changeFavStatus(it)
         }
+    }
 
-        submitList()
+    override fun withViewModel(): BaseViewModel = viewModel.apply {
+        loadChannels.observe {
+            it.isSuccessful { list ->
+                channelsAdapter.submitList(list)
+            }
+            binding.progressBar.isVisible = it.isLoading
+        }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.initContent()
-    }
-
-    private fun submitList() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadChannels.collect {
-                it.isSuccessful { list ->
-                    channelsAdapter.submitList(list)
-                }
-                binding.progressBar.isVisible = it.isLoading
-            }
-        }
-    }
-
-    private fun toStream(channel: TvChannelUI) {
-        val directions = ChannelsBaseFragmentDirections.openTvStream(channel)
-        findNavController().navigate(directions)
     }
 }

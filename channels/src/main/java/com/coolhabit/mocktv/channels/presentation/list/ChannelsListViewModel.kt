@@ -3,6 +3,7 @@ package com.coolhabit.mocktv.channels.presentation.list
 import androidx.lifecycle.viewModelScope
 import com.coolhabit.mocktv.baseUI.model.StatefulData
 import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
+import com.coolhabit.mocktv.channels.presentation.IChannelsListRouter
 import com.coolhabit.mocktv.domain.entities.TvChannel
 import com.coolhabit.mocktv.domain.usecases.ChannelsUseCase
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,7 @@ import javax.inject.Inject
 
 class ChannelsListViewModel @Inject constructor(
     private val useCase: ChannelsUseCase,
+    private val router: IChannelsListRouter,
 ) : BaseViewModel() {
 
     private val _loadChannels = statefulSharedFlow<List<TvChannel>>()
@@ -48,5 +50,9 @@ class ChannelsListViewModel @Inject constructor(
                 useCase.loadChannelsList(searchPattern)
             }
         }
+    }
+
+    fun navigateToTvStream(channelId: Int) {
+        navigateTo(router.navigateToTvStream(channelId))
     }
 }

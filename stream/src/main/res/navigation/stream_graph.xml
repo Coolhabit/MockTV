@@ -10,7 +10,10 @@
         android:name="com.coolhabit.mocktv.stream.TvStreamFragment"
         tools:layout="@layout/fragment_tv_stream">
         <argument
-            android:name="channel"
-            app:argType="com.coolhabit.mocktv.baseUI.model.TvChannelUI" />
+            android:name="channelId"
+            app:argType="integer" />
+        <deepLink
+            android:id="@+id/open_tv_stream"
+            app:uri="@string/deep_link_open_tv_stream_declaration" />
     </fragment>
 </navigation>

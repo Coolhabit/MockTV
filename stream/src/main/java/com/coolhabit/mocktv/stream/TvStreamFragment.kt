@@ -1,6 +1,5 @@
 package com.coolhabit.mocktv.stream
 
-import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Build
@@ -10,10 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.coolhabit.mocktv.baseUI.extensions.load
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
+import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.stream.databinding.FragmentTvStreamBinding
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -24,6 +23,10 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 
 class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
 
+    companion object {
+        const val MOCK_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+    }
+
     private val viewModel by viewModels<TvStreamViewModel>()
     private lateinit var binding: FragmentTvStreamBinding
     private val args by navArgs<TvStreamFragmentArgs>()
@@ -32,40 +35,37 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
     private var currentItem = 0
     private var playbackPosition = 0L
 
-    private val url = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel.initContent(args.channelId)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            requireActivity().window.insetsController?.hide(WindowInsets.Type.systemBars())
-        } else {
-            requireActivity().window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
+        manageFullScreen()
         binding = FragmentTvStreamBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        with(binding) {
-            channelLogo.load(args.channel.logo)
-            channelName.text = args.channel.name
-            currentProgram.text = args.channel.program
 
-            backBtn.setOnClickListener {
-                releasePlayer()
-                requireActivity().onBackPressed()
+        binding.backBtn.setOnClickListener {
+            releasePlayer()
+            viewModel.navigateBack()
+        }
+    }
+
+    override fun withViewModel(): BaseViewModel = viewModel.apply {
+        loadStream.observe {
+            it.isSuccessful { channel ->
+                with(binding) {
+                    channelLogo.load(channel.channelLogo)
+                    channelName.text = channel.channelName
+                    currentProgram.text = channel.currentProgram
+                }
             }
         }
     }
@@ -110,7 +110,7 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
                 binding.videoView.player = exoPlayer
                 val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
                 val mediaSource: MediaSource = HlsMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(MediaItem.fromUri(Uri.parse(url)))
+                    .createMediaSource(MediaItem.fromUri(Uri.parse(MOCK_URL)))
                 exoPlayer.setMediaSource(mediaSource)
                 exoPlayer.playWhenReady = playWhenReady
                 exoPlayer.seekTo(currentItem, playbackPosition)
@@ -126,5 +126,11 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
             exoPlayer.release()
         }
         player = null
+    }
+
+    private fun manageFullScreen() {
+        requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        requireActivity().window.insetsController?.hide(WindowInsets.Type.systemBars())
     }
 }

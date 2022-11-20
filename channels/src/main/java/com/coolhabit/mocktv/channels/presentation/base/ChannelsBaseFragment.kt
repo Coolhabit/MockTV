@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
+import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsBaseBinding
 import com.google.android.material.tabs.TabLayoutMediator
@@ -39,5 +40,8 @@ class ChannelsBaseFragment : BaseFragment(R.layout.fragment_channels_base) {
                 FAV_TAB -> tab.text = context?.getString(R.string.fav_tab)
             }
         }.attach()
+    }
+
+    override fun withViewModel(): BaseViewModel = viewModel.apply {
     }
 }

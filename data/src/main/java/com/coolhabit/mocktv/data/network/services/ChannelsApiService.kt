@@ -19,4 +19,10 @@ class ChannelsApiService(private val api: ChannelsApi) : IChannelsApiService {
             it.toDomain()
         }
     }
+
+    override suspend fun getChannelById(channelId: Int): TvChannel {
+        return api.getChannels().channels.first {
+            it.id == channelId
+        }.toDomain()
+    }
 }

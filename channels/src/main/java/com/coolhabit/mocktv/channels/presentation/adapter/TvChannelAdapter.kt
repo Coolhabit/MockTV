@@ -10,14 +10,14 @@ import javax.inject.Inject
 
 class TvChannelAdapter @Inject constructor() : ListAdapter<TvChannel, TvChannelViewHolder>(TvChannelDiffUtils()) {
 
-    var onCardClick: (TvChannel) -> Unit = {}
+    var onCardClick: (Int) -> Unit = {}
     var onFavClick: (TvChannel) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvChannelViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = RvChannelItemBinding.inflate(inflater, parent, false)
         return TvChannelViewHolder(binding, onFavClick) { position ->
-            onCardClick(getItem(position))
+            onCardClick(getItem(position).channelId)
         }
     }
 

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolhabit.mocktv.baseUI.adapter.ItemDecoration
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
+import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsListBinding
 import com.coolhabit.mocktv.channels.presentation.adapter.TvChannelAdapter
@@ -82,30 +83,25 @@ class FavsListFragment : BaseFragment(R.layout.fragment_channels_list) {
             }
         }
 
-        channelsAdapter.onCardClick = {
-            Toast.makeText(requireContext(), "go to channel ${it.channelName}", Toast.LENGTH_SHORT)
-                .show()
+        channelsAdapter.onCardClick = { id ->
+            viewModel.navigateToTvStream(id)
         }
         channelsAdapter.onFavClick = {
             viewModel.removeChannelFromFav(it)
         }
+    }
 
-        submitList()
+    override fun withViewModel(): BaseViewModel = viewModel.apply {
+        loadChannels.observe {
+            it.isSuccessful { list ->
+                channelsAdapter.submitList(list)
+            }
+            binding.progressBar.isVisible = it.isLoading
+        }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.initContent()
-    }
-
-    private fun submitList() {
-        viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadChannels.collect {
-                it.isSuccessful { list ->
-                    channelsAdapter.submitList(list)
-                }
-                binding.progressBar.isVisible = it.isLoading
-            }
-        }
     }
 }
