@@ -28,7 +28,7 @@ fun DefaultTrackSelector.generateQualityList(): ArrayList<Pair<String, TrackSele
                         if (isTrackSupported) {
                             val track = trackGroups[groupIndex]
                             val trackName =
-                                "${track.getFormat(trackIndex).width} x ${track.getFormat(trackIndex).height}"
+                                "${track.getFormat(trackIndex).height}p"
                             if (track.getFormat(trackIndex).selectionFlags== C.SELECTION_FLAG_AUTOSELECT){
                                 trackName.plus(" (Default)")
                             }
