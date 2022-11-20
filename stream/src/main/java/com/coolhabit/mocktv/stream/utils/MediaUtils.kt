@@ -5,9 +5,11 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector
 import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 
-fun DefaultTrackSelector.generateQualityList(): ArrayList<Pair<String, TrackSelectionOverrides.Builder>> {
-    //Render Track -> TRACK GROUPS (Track Array)(Video,Audio,Text)->Track
-    val trackOverrideList = ArrayList<Pair<String, TrackSelectionOverrides.Builder>>()
+const val AUTO = "Auto"
+
+fun DefaultTrackSelector.generateQualityList(currentItemName: String?): MutableList<QualityItem> {
+
+    val trackOverrideList = mutableListOf<QualityItem>()
 
     val renderTrack = this.currentMappedTrackInfo
     val renderCount = renderTrack?.rendererCount ?: 0
@@ -29,27 +31,30 @@ fun DefaultTrackSelector.generateQualityList(): ArrayList<Pair<String, TrackSele
                             val track = trackGroups[groupIndex]
                             val trackName =
                                 "${track.getFormat(trackIndex).height}p"
-                            if (track.getFormat(trackIndex).selectionFlags== C.SELECTION_FLAG_AUTOSELECT){
-                                trackName.plus(" (Default)")
-                            }
                             val trackBuilder =
                                 TrackSelectionOverrides.Builder()
                                     .clearOverridesOfType(C.TRACK_TYPE_VIDEO)
                                     .addOverride(
-                                        TrackSelectionOverrides.TrackSelectionOverride(track,
-                                        listOf(trackIndex)
-                                        ))
-                            trackOverrideList.add(Pair(trackName, trackBuilder))
+                                        TrackSelectionOverrides.TrackSelectionOverride(
+                                            track,
+                                            listOf(trackIndex)
+                                        )
+                                    )
+                            trackOverrideList.add(QualityItem(trackName, trackBuilder, trackName == currentItemName))
                         }
                     }
                 }
+                trackOverrideList.add(autoTrack(currentItemName))
             }
         }
     }
     return trackOverrideList
 }
 
-fun isSupportedFormat(mappedTrackInfo: MappingTrackSelector.MappedTrackInfo?, rendererIndex: Int): Boolean {
+fun isSupportedFormat(
+    mappedTrackInfo: MappingTrackSelector.MappedTrackInfo?,
+    rendererIndex: Int
+): Boolean {
     val trackGroupArray = mappedTrackInfo?.getTrackGroups(rendererIndex)
     return if (trackGroupArray?.length == 0) {
         false
@@ -57,3 +62,8 @@ fun isSupportedFormat(mappedTrackInfo: MappingTrackSelector.MappedTrackInfo?, re
         rendererIndex
     ) == C.TRACK_TYPE_AUDIO || mappedTrackInfo?.getRendererType(rendererIndex) == C.TRACK_TYPE_TEXT
 }
+
+fun autoTrack(currentItemName: String?) = QualityItem(
+    AUTO, TrackSelectionOverrides.Builder()
+        .clearOverridesOfType(C.TRACK_TYPE_VIDEO), (currentItemName == null || currentItemName == AUTO)
+)

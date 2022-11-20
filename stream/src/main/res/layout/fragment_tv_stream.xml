@@ -69,12 +69,24 @@
         android:id="@+id/quality_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_16"
+        android:layout_marginBottom="@dimen/size_30"
         android:clickable="true"
         android:foreground="@drawable/bg_ripple_circle"
         android:src="@drawable/ic_quality_btn"
-        android:layout_marginEnd="@dimen/size_16"
-        android:layout_marginBottom="@dimen/size_30"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <include
+        android:id="@+id/quality_list_view"
+        layout="@layout/view_quality_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/size_16"
+        android:layout_marginBottom="@dimen/size_6"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/quality_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

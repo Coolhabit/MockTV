@@ -13,6 +13,8 @@ import com.coolhabit.mocktv.baseUI.extensions.load
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.stream.databinding.FragmentTvStreamBinding
+import com.coolhabit.mocktv.stream.utils.QualityItem
+import com.coolhabit.mocktv.stream.utils.QualityItemInflater
 import com.coolhabit.mocktv.stream.utils.generateQualityList
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -20,9 +22,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
-import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import kotlin.collections.ArrayList
 
 class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Listener {
 
@@ -38,9 +38,10 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
     private var playWhenReady = true
     private var currentItem = 0
     private var playbackPosition = 0L
-    private var qualityPopUp: PopupMenu? = null
-    var qualityList = ArrayList<Pair<String, TrackSelectionOverrides.Builder>>()
+    var qualityList = mutableListOf<QualityItem>()
     private var trackSelector: DefaultTrackSelector? = null
+    private val qualityItemInflater = QualityItemInflater()
+    var currentQualityName: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +67,13 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
         }
 
         binding.qualityBtn.setOnClickListener {
-            qualityPopUp?.show()
+//            qualityPopUp?.show()
+            val listView = binding.qualityListView.root
+            if (listView.visibility == View.GONE) {
+                listView.visibility = View.VISIBLE
+            } else {
+                listView.visibility = View.GONE
+            }
         }
     }
 
@@ -149,29 +156,21 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
     }
 
     private fun setUpQualityList() {
-        qualityPopUp = PopupMenu(requireContext(), binding.qualityBtn)
-        qualityList.let {
-            for ((i, videoQuality) in it.withIndex()) {
-                qualityPopUp?.menu?.add(0, i, 0, videoQuality.first)
-            }
-        }
-        qualityPopUp?.setOnMenuItemClickListener { menuItem ->
-            qualityList[menuItem.itemId].let {
-                trackSelector!!.setParameters(
-                    trackSelector!!.getParameters()
-                        .buildUpon()
-                        .setTrackSelectionOverrides(it.second.build())
-                        .setTunnelingEnabled(true)
-                        .build()
-                )
-            }
-            true
+        qualityItemInflater.itemInflate(binding.qualityListView.qualityContainer, qualityList)
+        qualityItemInflater.onItemClick = { qualityItem ->
+            trackSelector!!.parameters = trackSelector!!.parameters
+                .buildUpon()
+                .setTrackSelectionOverrides(qualityItem.selectionOverride.build())
+                .setTunnelingEnabled(true)
+                .build()
+            currentQualityName = qualityItem.name
+            binding.qualityListView.root.visibility = View.GONE
         }
     }
 
     override fun onPlaybackStateChanged(playbackState: Int) {
         if (playbackState == Player.STATE_READY) {
-            trackSelector?.generateQualityList()?.let {
+            trackSelector?.generateQualityList(currentQualityName)?.let {
                 qualityList = it
                 setUpQualityList()
             }
