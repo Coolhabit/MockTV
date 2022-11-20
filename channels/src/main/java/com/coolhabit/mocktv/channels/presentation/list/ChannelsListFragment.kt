@@ -89,7 +89,7 @@ class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
     }
 
     override fun withViewModel(): BaseViewModel = viewModel.apply {
-        loadChannels.observe {
+        loadChannels.collectWithState {
             it.isSuccessful { list ->
                 channelsAdapter.submitList(list)
             }

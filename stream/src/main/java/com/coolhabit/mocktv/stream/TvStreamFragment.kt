@@ -1,30 +1,34 @@
 package com.coolhabit.mocktv.stream
 
 import android.content.pm.ActivityInfo
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.PopupMenu
 import androidx.navigation.fragment.navArgs
 import com.coolhabit.mocktv.baseUI.extensions.load
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import com.coolhabit.mocktv.stream.databinding.FragmentTvStreamBinding
+import com.coolhabit.mocktv.stream.utils.generateQualityList
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.source.hls.HlsMediaSource
-import com.google.android.exoplayer2.upstream.DataSource
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelectionOverrides
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import kotlin.collections.ArrayList
 
-class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
+class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Listener {
 
     companion object {
-        const val MOCK_URL = "https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8"
+        const val MOCK_URL =
+            "https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8"
     }
 
     private val viewModel by viewModels<TvStreamViewModel>()
@@ -34,6 +38,10 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
     private var playWhenReady = true
     private var currentItem = 0
     private var playbackPosition = 0L
+    private var qualityPopUp: PopupMenu? = null
+    var qualityList = ArrayList<Pair<String, TrackSelectionOverrides.Builder>>()
+    private var trackSelector: DefaultTrackSelector? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,10 +64,14 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
             releasePlayer()
             viewModel.navigateBack()
         }
+
+        binding.qualityBtn.setOnClickListener {
+            qualityPopUp?.show()
+        }
     }
 
     override fun withViewModel(): BaseViewModel = viewModel.apply {
-        loadStream.observe {
+        loadStream.collectWithState {
             it.isSuccessful { channel ->
                 with(binding) {
                     channelLogo.load(channel.channelLogo)
@@ -104,18 +116,20 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
     }
 
     private fun initializePlayer() {
+        trackSelector = DefaultTrackSelector(requireContext(), AdaptiveTrackSelection.Factory())
         player = ExoPlayer.Builder(requireContext())
+            .setTrackSelector(trackSelector!!)
             .build()
-            .also { exoPlayer ->
-                binding.videoView.player = exoPlayer
-                val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
-                val mediaSource: MediaSource = HlsMediaSource.Factory(dataSourceFactory)
-                    .createMediaSource(MediaItem.fromUri(Uri.parse(MOCK_URL)))
-                exoPlayer.setMediaSource(mediaSource)
-                exoPlayer.playWhenReady = playWhenReady
-                exoPlayer.seekTo(currentItem, playbackPosition)
-                exoPlayer.prepare()
-            }
+        player?.playWhenReady = true
+        binding.videoView.player = player
+        val mediaSource =
+            HlsMediaSource.Factory(DefaultHttpDataSource.Factory())
+                .createMediaSource(MediaItem.fromUri(MOCK_URL))
+        player?.setMediaSource(mediaSource)
+        player?.seekTo(playbackPosition)
+        player?.playWhenReady = playWhenReady
+        player?.addListener(this)
+        player?.prepare()
     }
 
     private fun releasePlayer() {
@@ -132,5 +146,35 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream) {
         requireActivity().requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         requireActivity().window.insetsController?.hide(WindowInsets.Type.systemBars())
+    }
+
+    private fun setUpQualityList() {
+        qualityPopUp = PopupMenu(requireContext(), binding.qualityBtn)
+        qualityList.let {
+            for ((i, videoQuality) in it.withIndex()) {
+                qualityPopUp?.menu?.add(0, i, 0, videoQuality.first)
+            }
+        }
+        qualityPopUp?.setOnMenuItemClickListener { menuItem ->
+            qualityList[menuItem.itemId].let {
+                trackSelector!!.setParameters(
+                    trackSelector!!.getParameters()
+                        .buildUpon()
+                        .setTrackSelectionOverrides(it.second.build())
+                        .setTunnelingEnabled(true)
+                        .build()
+                )
+            }
+            true
+        }
+    }
+
+    override fun onPlaybackStateChanged(playbackState: Int) {
+        if (playbackState == Player.STATE_READY) {
+            trackSelector?.generateQualityList()?.let {
+                qualityList = it
+                setUpQualityList()
+            }
+        }
     }
 }

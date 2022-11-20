@@ -74,10 +74,7 @@ dependencies {
     implementation glide_core
     kapt glide_kapt
 
-    implementation exo_player_core
-    implementation exo_player_dash
-    implementation exo_player_ui
-    implementation exo_player_hls
+    implementation exo_player
 
     implementation project(':baseUI')
     implementation project(':domain')

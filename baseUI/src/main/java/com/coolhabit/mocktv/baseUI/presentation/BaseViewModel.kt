@@ -38,27 +38,27 @@ abstract class BaseViewModel : ViewModel() {
         )
             .apply {
                 viewModelScope.launch {
-                    emit(StatefulData.loading())
+                    emit(StatefulData.Loading())
                 }
                 distinctUntilChanged()
             }
 
-    protected fun <T> getData(
-        block: suspend () -> T,
+    private fun <T> getData(
+        get: suspend () -> T,
     ): Flow<StatefulData<T>> = flow {
         try {
-            emit(StatefulData.loading())
-            emit(StatefulData.success(block()))
+            emit(StatefulData.Loading())
+            emit(StatefulData.Success(get()))
         } catch (error: Throwable) {
-            emit(StatefulData.failure(error))
+            emit(StatefulData.Error(error))
         }
     }
 
     fun <T> MutableSharedFlow<StatefulData<T>>.fetch(
-        block: suspend () -> T,
+        get: suspend () -> T,
     ) {
         viewModelScope.launch(Dispatchers.IO) {
-            getData(block).collect {
+            getData(get).collect {
                 emit(it)
             }
         }

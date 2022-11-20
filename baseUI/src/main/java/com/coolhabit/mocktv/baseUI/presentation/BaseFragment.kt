@@ -48,19 +48,19 @@ abstract class BaseFragment(resource: Int) : Fragment(resource) {
 
     private fun BaseViewModel.onNavigationCommands() {
 
-        this.navigationCommand.observe { action ->
+        this.navigationCommand.collectWithState { action ->
             when (action) {
                 is NavCommand.Navigate -> findNavController().navigate(
                     action.directions,
                 )
                 is NavCommand.Deeplink -> {
-                    if (action.popBackStackTo > 0) {
-                        findNavController().popBackStack(action.popBackStackTo, true)
+                    if (action.backTo > 0) {
+                        findNavController().popBackStack(action.backTo, true)
                     }
-                    findNavController().navigate(action.request)
+                    findNavController().navigate(action.deeplinkRequest)
                 }
                 is NavCommand.GoBack -> {
-                    action.popBackStackTo.takeIf { it > 0 }?.let {
+                    action.backTo.takeIf { it > 0 }?.let {
                         val result = !findNavController().popBackStack(it, false)
                         if (result) {
                             forceApplicationFinish()
@@ -75,7 +75,7 @@ abstract class BaseFragment(resource: Int) : Fragment(resource) {
         }
     }
 
-    protected fun <T> Flow<T>.observe(getData: (T) -> Unit) {
+    protected fun <T> Flow<T>.collectWithState(getData: (T) -> Unit) {
         val currentFlow = this
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {

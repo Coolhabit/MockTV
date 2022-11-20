@@ -88,10 +88,7 @@ dependencies {
     implementation retrofit_gson
     implementation retrofit_log
 
-    implementation exo_player_core
-    implementation exo_player_dash
-    implementation exo_player_ui
-    implementation exo_player_hls
+    implementation exo_player
 
     implementation project(':channels')
     implementation project(':baseUI')

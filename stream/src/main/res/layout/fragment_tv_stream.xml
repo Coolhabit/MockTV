@@ -65,4 +65,16 @@
         app:layout_constraintTop_toBottomOf="@id/current_program"
         tools:text="2x2" />
 
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/quality_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:foreground="@drawable/bg_ripple_circle"
+        android:src="@drawable/ic_quality_btn"
+        android:layout_marginEnd="@dimen/size_16"
+        android:layout_marginBottom="@dimen/size_30"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
