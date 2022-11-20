@@ -10,6 +10,7 @@
         <entry key="..\:/Android/Projects/MockTV/channels/src/main/res/layout/fragment_channels_list.xml" value="0.22826086956521738" />
         <entry key="..\:/Android/Projects/MockTV/channels/src/main/res/layout/fragment_favs_list.xml" value="0.1" />
         <entry key="..\:/Android/Projects/MockTV/channels/src/main/res/layout/rv_channel_item.xml" value="0.1" />
+        <entry key="..\:/Android/Projects/MockTV/stream/src/main/res/layout/fragment_tv_stream.xml" value="0.4" />
       </map>
     </option>
   </component>

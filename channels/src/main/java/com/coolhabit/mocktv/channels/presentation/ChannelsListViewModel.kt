@@ -21,4 +21,16 @@ class ChannelsListViewModel @Inject constructor(
             _loadChannels.emit(useCase.loadChannelsList())
         }
     }
+
+    fun changeFavStatus(channel: TvChannel) {
+        viewModelScope.launch {
+            if (channel.isFavorite) {
+                useCase.removeChannelFromFav(channel)
+                initContent()
+            } else {
+                useCase.addChannelToFav(channel)
+                initContent()
+            }
+        }
+    }
 }

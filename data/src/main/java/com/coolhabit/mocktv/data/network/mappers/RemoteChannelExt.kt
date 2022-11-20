@@ -10,5 +10,6 @@ fun RemoteChannel.toDomain(): TvChannel {
         channelLogo = this.image,
         currentProgram = this.current.title,
         streamUrl = this.url,
+        isFavorite = false,
     )
 }

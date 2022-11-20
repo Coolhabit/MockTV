@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolhabit.mocktv.baseUI.adapter.ItemDecoration
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsListBinding
 import com.coolhabit.mocktv.channels.presentation.adapter.TvChannelAdapter
-import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment
+import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragmentDirections
+import com.coolhabit.mocktv.channels.presentation.extensions.toUiModel
+import com.coolhabit.mocktv.baseUI.model.TvChannelUI
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -56,7 +58,19 @@ class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
             )
         }
 
+        channelsAdapter.onCardClick = {
+            toStream(it.toUiModel())
+        }
+        channelsAdapter.onFavClick = {
+            viewModel.changeFavStatus(it)
+        }
+
         submitList()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.initContent()
     }
 
     private fun submitList() {
@@ -65,5 +79,10 @@ class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
                 channelsAdapter.submitList(list)
             }
         }
+    }
+
+    private fun toStream(channel: TvChannelUI) {
+        val directions = ChannelsBaseFragmentDirections.openTvStream(channel)
+        findNavController().navigate(directions)
     }
 }

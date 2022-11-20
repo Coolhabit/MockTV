@@ -9,6 +9,14 @@
         android:id="@+id/fragment_channels_base"
         android:name="com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment"
         tools:layout="@layout/fragment_channels_base">
+        <action
+            android:id="@+id/open_tv_stream"
+            app:destination="@id/stream_graph">
+            <argument
+                android:name="channel"
+                app:argType="com.coolhabit.mocktv.baseUI.model.TvChannelUI" />
+        </action>
     </fragment>
 
+    <include app:graph="@navigation/stream_graph" />
 </navigation>

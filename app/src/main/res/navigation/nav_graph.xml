@@ -6,4 +6,5 @@
     app:startDestination="@+id/channels_graph">
 
     <include app:graph="@navigation/channels_graph" />
+    <include app:graph="@navigation/stream_graph" />
 </navigation>

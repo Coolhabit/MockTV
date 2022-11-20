@@ -77,4 +77,5 @@ dependencies {
     implementation project(':baseUI')
     implementation project(':domain')
     implementation project(':data')
+    implementation project(':stream')
 }

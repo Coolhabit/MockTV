@@ -21,6 +21,8 @@ ext {
     def retrofit_log_v = "4.9.0"
     def okhttp_v = "4.3.1"
 
+    def exoplayer_vers = "2.18.1"
+
     desugaring = "com.android.tools:desugar_jdk_libs:1.0.9"
 
     // android
@@ -83,4 +85,10 @@ ext {
 
     //okhttp
     okhttp = "com.squareup.okhttp3:okhttp:$okhttp_v"
+
+    //exo_player
+    exo_player_core =  "com.google.android.exoplayer:exoplayer-core:$exoplayer_vers"
+    exo_player_dash = "com.google.android.exoplayer:exoplayer-dash:$exoplayer_vers"
+    exo_player_ui = "com.google.android.exoplayer:exoplayer-ui:$exoplayer_vers"
+    exo_player_hls = "com.google.android.exoplayer:exoplayer-hls:$exoplayer_vers"
 }

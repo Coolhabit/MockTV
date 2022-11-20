@@ -6,4 +6,5 @@ data class TvChannel(
     val channelLogo: String,
     val currentProgram: String,
     val streamUrl: String,
+    var isFavorite: Boolean,
 )

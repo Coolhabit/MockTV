@@ -8,6 +8,7 @@ import com.coolhabit.mocktv.channels.presentation.favs.FavsListViewModel
 import com.coolhabit.mocktv.ioc.utils.ViewModelFactory
 import com.coolhabit.mocktv.ioc.utils.ViewModelKey
 import com.coolhabit.mocktv.presentation.MainActivityViewModel
+import com.coolhabit.mocktv.stream.TvStreamViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -37,4 +38,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FavsListViewModel::class)
     abstract fun favsListViewModel(viewModel: FavsListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TvStreamViewModel::class)
+    abstract fun tvStreamViewModel(viewModel: TvStreamViewModel): ViewModel
 }

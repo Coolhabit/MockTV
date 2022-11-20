@@ -1,6 +1,7 @@
 package com.coolhabit.mocktv.ioc.modules
 
 import com.coolhabit.mocktv.domain.api.IChannelsApiService
+import com.coolhabit.mocktv.domain.api.IDatabaseStorage
 import com.coolhabit.mocktv.domain.usecases.ChannelsUseCase
 import dagger.Module
 import dagger.Provides
@@ -13,5 +14,6 @@ class UseCasesModule {
     @Singleton
     fun provideChannelsUseCase(
         api: IChannelsApiService,
-    ) = ChannelsUseCase(api)
+        database: IDatabaseStorage,
+    ) = ChannelsUseCase(api, database)
 }
