@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -101,8 +102,11 @@ class ChannelsListFragment : BaseFragment(R.layout.fragment_channels_list) {
 
     private fun submitList() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-            viewModel.loadChannels.collect { list ->
-                channelsAdapter.submitList(list)
+            viewModel.loadChannels.collect {
+                it.isSuccessful { list ->
+                    channelsAdapter.submitList(list)
+                }
+                binding.progressBar.isVisible = it.isLoading
             }
         }
     }
