@@ -88,5 +88,4 @@ ext {
 
     //exo_player
     exo_player =  "com.google.android.exoplayer:exoplayer:$exoplayer_vers"
-
 }

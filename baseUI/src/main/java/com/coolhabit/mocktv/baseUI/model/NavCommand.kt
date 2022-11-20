@@ -4,7 +4,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavDirections
 
 sealed class NavCommand {
-    data class Navigate(val directions: NavDirections) : NavCommand()
+    class Navigate(val directions: NavDirections) : NavCommand()
 
     class Deeplink(val deeplinkRequest: NavDeepLinkRequest, val backTo: Int = -1) : NavCommand()
 

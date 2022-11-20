@@ -8,7 +8,7 @@ import com.coolhabit.mocktv.domain.api.IChannelsApiService
 class ChannelsApiService(private val api: ChannelsApi) : IChannelsApiService {
 
     override suspend fun getChannels(searchPattern: String?): List<TvChannel> {
-        val result = if(searchPattern.isNullOrEmpty()) {
+        val result = if (searchPattern.isNullOrEmpty()) {
             api.getChannels().channels
         } else {
             api.getChannels().channels.filter {

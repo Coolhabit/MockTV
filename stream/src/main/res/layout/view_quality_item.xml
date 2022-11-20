@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true"
     android:background="@color/white"
+    android:clickable="true"
     android:foreground="?attr/selectableItemBackground">
 
     <com.google.android.material.textview.MaterialTextView
@@ -21,4 +21,12 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Auto" />
 
+    <View
+        android:id="@+id/delimiter"
+        android:layout_width="@dimen/size_0"
+        android:layout_height="@dimen/size_1"
+        android:background="@color/delimiter_grey"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

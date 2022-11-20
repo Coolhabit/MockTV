@@ -20,7 +20,7 @@ class ChannelsUseCase @Inject constructor(
     }
 
     suspend fun loadFavoriteChannels(searchPattern: String?): List<TvChannel> {
-        val result = if(searchPattern.isNullOrEmpty()) {
+        val result = if (searchPattern.isNullOrEmpty()) {
             database.getFavoriteChannels()
         } else {
             database.getFavoriteChannelsByName(searchPattern)

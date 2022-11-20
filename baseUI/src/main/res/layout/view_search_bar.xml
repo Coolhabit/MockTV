@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:maxLines="1"
+            android:maxLines="@integer/int_1"
             android:paddingVertical="@dimen/size_10"
             android:singleLine="true"
             android:textColor="@color/white"

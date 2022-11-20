@@ -1,10 +1,7 @@
 package com.coolhabit.mocktv.channels.presentation.adapter
 
-import android.content.res.ColorStateList
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.coolhabit.mocktv.baseUI.extensions.load
-import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.RvChannelItemBinding
 import com.coolhabit.mocktv.domain.entities.TvChannel
 import com.google.android.material.imageview.ShapeableImageView

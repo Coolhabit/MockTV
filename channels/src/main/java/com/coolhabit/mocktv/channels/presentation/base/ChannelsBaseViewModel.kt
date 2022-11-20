@@ -1,6 +1,5 @@
 package com.coolhabit.mocktv.channels.presentation.base
 
-import androidx.lifecycle.ViewModel
 import com.coolhabit.mocktv.baseUI.presentation.BaseViewModel
 import javax.inject.Inject
 

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="128dp"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="@dimen/size_0"
-    app:cardCornerRadius="@dimen/size_12">
+    android:layout_width="@dimen/size_128"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/size_12"
+    app:cardElevation="@dimen/size_0">
+
     <LinearLayout
         android:id="@+id/quality_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"/>
+        android:orientation="vertical" />
 
 </com.google.android.material.card.MaterialCardView>

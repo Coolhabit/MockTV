@@ -13,4 +13,5 @@
     <color name="input_hint_grey">#808185</color>
     <color name="blue_select">#0077FF</color>
     <color name="grey_unselect">#80D1D5DF</color>
+    <color name="delimiter_grey">#D8E1E6</color>
 </resources>

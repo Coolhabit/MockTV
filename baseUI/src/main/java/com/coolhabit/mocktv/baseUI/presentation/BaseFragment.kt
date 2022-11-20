@@ -47,7 +47,6 @@ abstract class BaseFragment(resource: Int) : Fragment(resource) {
     abstract fun withViewModel(): BaseViewModel
 
     private fun BaseViewModel.onNavigationCommands() {
-
         this.navigationCommand.collectWithState { action ->
             when (action) {
                 is NavCommand.Navigate -> findNavController().navigate(

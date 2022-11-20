@@ -45,10 +45,8 @@ class ChannelsListViewModel @Inject constructor(
         }
 
         prevQuery = searchPattern
-        viewModelScope.launch {
-            _loadChannels.fetch {
-                useCase.loadChannelsList(searchPattern)
-            }
+        _loadChannels.fetch {
+            useCase.loadChannelsList(searchPattern)
         }
     }
 

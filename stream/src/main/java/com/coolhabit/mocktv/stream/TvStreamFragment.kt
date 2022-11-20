@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.PopupMenu
 import androidx.navigation.fragment.navArgs
 import com.coolhabit.mocktv.baseUI.extensions.load
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
@@ -34,6 +33,7 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
     private val viewModel by viewModels<TvStreamViewModel>()
     private lateinit var binding: FragmentTvStreamBinding
     private val args by navArgs<TvStreamFragmentArgs>()
+
     var player: ExoPlayer? = null
     private var playWhenReady = true
     private var currentItem = 0
@@ -158,7 +158,7 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
     private fun setUpQualityList() {
         qualityItemInflater.itemInflate(binding.qualityListView.qualityContainer, qualityList)
         qualityItemInflater.onItemClick = { qualityItem ->
-            trackSelector!!.parameters = trackSelector!!.parameters
+            trackSelector?.parameters = trackSelector!!.parameters
                 .buildUpon()
                 .setTrackSelectionOverrides(qualityItem.selectionOverride.build())
                 .setTunnelingEnabled(true)

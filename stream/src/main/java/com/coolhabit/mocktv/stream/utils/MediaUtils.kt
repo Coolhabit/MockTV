@@ -17,35 +17,44 @@ fun DefaultTrackSelector.generateQualityList(currentItemName: String?): MutableL
         if (isSupportedFormat(renderTrack, rendererIndex)) {
             val trackGroupType = renderTrack?.getRendererType(rendererIndex)
             val trackGroups = renderTrack?.getTrackGroups(rendererIndex)
-            val trackGroupsCount = trackGroups?.length!!
-            if (trackGroupType == C.TRACK_TYPE_VIDEO) {
-                for (groupIndex in 0 until trackGroupsCount) {
-                    val videoQualityTrackCount = trackGroups[groupIndex].length
-                    for (trackIndex in 0 until videoQualityTrackCount) {
-                        val isTrackSupported = renderTrack.getTrackSupport(
-                            rendererIndex,
-                            groupIndex,
-                            trackIndex
-                        ) == C.FORMAT_HANDLED
-                        if (isTrackSupported) {
-                            val track = trackGroups[groupIndex]
-                            val trackName =
-                                "${track.getFormat(trackIndex).height}p"
-                            val trackBuilder =
-                                TrackSelectionOverrides.Builder()
-                                    .clearOverridesOfType(C.TRACK_TYPE_VIDEO)
-                                    .addOverride(
-                                        TrackSelectionOverrides.TrackSelectionOverride(
-                                            track,
-                                            listOf(trackIndex)
+            val trackGroupsCount = trackGroups?.length
+            trackGroupsCount?.let {
+                if (trackGroupType == C.TRACK_TYPE_VIDEO) {
+                    for (groupIndex in 0 until trackGroupsCount) {
+                        val videoQualityTrackCount = trackGroups[groupIndex].length
+                        for (trackIndex in 0 until videoQualityTrackCount) {
+                            val isTrackSupported = renderTrack.getTrackSupport(
+                                rendererIndex,
+                                groupIndex,
+                                trackIndex
+                            ) == C.FORMAT_HANDLED
+                            if (isTrackSupported) {
+                                val track = trackGroups[groupIndex]
+                                val trackName =
+                                    "${track.getFormat(trackIndex).height}p"
+                                val trackBuilder =
+                                    TrackSelectionOverrides.Builder()
+                                        .clearOverridesOfType(C.TRACK_TYPE_VIDEO)
+                                        .addOverride(
+                                            TrackSelectionOverrides.TrackSelectionOverride(
+                                                track,
+                                                listOf(trackIndex)
+                                            )
                                         )
+                                trackOverrideList.add(
+                                    QualityItem(
+                                        trackName,
+                                        trackBuilder,
+                                        trackName == currentItemName
                                     )
-                            trackOverrideList.add(QualityItem(trackName, trackBuilder, trackName == currentItemName))
+                                )
+                            }
                         }
                     }
+                    trackOverrideList.add(autoTrack(currentItemName))
                 }
-                trackOverrideList.add(autoTrack(currentItemName))
             }
+
         }
     }
     return trackOverrideList
@@ -64,6 +73,8 @@ fun isSupportedFormat(
 }
 
 fun autoTrack(currentItemName: String?) = QualityItem(
-    AUTO, TrackSelectionOverrides.Builder()
-        .clearOverridesOfType(C.TRACK_TYPE_VIDEO), (currentItemName == null || currentItemName == AUTO)
+    AUTO,
+    TrackSelectionOverrides.Builder()
+        .clearOverridesOfType(C.TRACK_TYPE_VIDEO),
+    (currentItemName == null || currentItemName == AUTO)
 )

@@ -8,6 +8,5 @@
     <fragment
         android:id="@+id/fragment_channels_base"
         android:name="com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment"
-        tools:layout="@layout/fragment_channels_base">
-    </fragment>
+        tools:layout="@layout/fragment_channels_base" />
 </navigation>
