@@ -2,7 +2,7 @@ package com.coolhabit.mocktv.ioc.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.coolhabit.mocktv.channels.presentation.ChannelsListViewModel
+import com.coolhabit.mocktv.channels.presentation.list.ChannelsListViewModel
 import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseViewModel
 import com.coolhabit.mocktv.channels.presentation.favs.FavsListViewModel
 import com.coolhabit.mocktv.ioc.utils.ViewModelFactory

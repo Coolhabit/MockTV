@@ -20,4 +20,7 @@ interface MockDao {
 
     @Query("SELECT * FROM $DATABASE_NAME")
     suspend fun getFavoriteChannels(): List<TvChannelDB>
+
+    @Query("SELECT * FROM $DATABASE_NAME WHERE dbChannelName LIKE '%' || :query || '%'")
+    suspend fun getFavoriteChannelsByName(query: String): List<TvChannelDB>
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsBaseBinding

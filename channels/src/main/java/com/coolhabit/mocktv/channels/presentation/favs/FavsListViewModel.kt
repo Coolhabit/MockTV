@@ -16,9 +16,11 @@ class FavsListViewModel @Inject constructor(
     private val _loadChannels = MutableSharedFlow<List<TvChannel>>()
     val loadChannels = _loadChannels.asSharedFlow()
 
+    var prevQuery: String? = null
+
     fun initContent() {
         viewModelScope.launch {
-            _loadChannels.emit(useCase.loadFavoriteChannels())
+            _loadChannels.emit(useCase.loadFavoriteChannels(null))
         }
     }
 
@@ -26,6 +28,17 @@ class FavsListViewModel @Inject constructor(
         viewModelScope.launch {
             useCase.removeChannelFromFav(channel)
             initContent()
+        }
+    }
+
+    fun performSearch(searchPattern: String) {
+        if (prevQuery == searchPattern) {
+            return
+        }
+
+        prevQuery = searchPattern
+        viewModelScope.launch {
+            _loadChannels.emit(useCase.loadFavoriteChannels(searchPattern))
         }
     }
 }

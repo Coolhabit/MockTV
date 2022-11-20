@@ -29,4 +29,10 @@ class DatabaseStorageImpl(context: Context) : IDatabaseStorage {
             it.toDomain()
         }
     }
+
+    override suspend fun getFavoriteChannelsByName(searchPattern: String): List<TvChannel> {
+        return database.channelsDao().getFavoriteChannelsByName(searchPattern).map {
+            it.toDomain()
+        }
+    }
 }

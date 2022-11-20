@@ -4,5 +4,5 @@ import com.coolhabit.mocktv.domain.entities.TvChannel
 
 interface IChannelsApiService {
 
-    suspend fun getChannels(): List<TvChannel>
+    suspend fun getChannels(searchPattern: String?): List<TvChannel>
 }

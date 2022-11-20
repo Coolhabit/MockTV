@@ -9,4 +9,6 @@ interface IDatabaseStorage {
     suspend fun removeChannelFromFavorite(channel: TvChannel)
 
     suspend fun getFavoriteChannels(): List<TvChannel>
+
+    suspend fun getFavoriteChannelsByName(searchPattern: String): List<TvChannel>
 }

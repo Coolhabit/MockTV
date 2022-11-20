@@ -1,6 +1,6 @@
 package com.coolhabit.mocktv.ioc.modules
 
-import com.coolhabit.mocktv.channels.presentation.ChannelsListFragment
+import com.coolhabit.mocktv.channels.presentation.list.ChannelsListFragment
 import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment
 import com.coolhabit.mocktv.channels.presentation.favs.FavsListFragment
 import com.coolhabit.mocktv.stream.TvStreamFragment

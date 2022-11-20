@@ -1,4 +1,4 @@
-package com.coolhabit.mocktv.channels.presentation
+package com.coolhabit.mocktv.channels.presentation.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,9 +16,11 @@ class ChannelsListViewModel @Inject constructor(
     private val _loadChannels = MutableSharedFlow<List<TvChannel>>()
     val loadChannels = _loadChannels.asSharedFlow()
 
+    var prevQuery: String? = null
+
     fun initContent() {
         viewModelScope.launch {
-            _loadChannels.emit(useCase.loadChannelsList())
+            _loadChannels.emit(useCase.loadChannelsList(null))
         }
     }
 
@@ -31,6 +33,17 @@ class ChannelsListViewModel @Inject constructor(
                 useCase.addChannelToFav(channel)
                 initContent()
             }
+        }
+    }
+
+    fun performSearch(searchPattern: String) {
+        if (prevQuery == searchPattern) {
+            return
+        }
+
+        prevQuery = searchPattern
+        viewModelScope.launch {
+            _loadChannels.emit(useCase.loadChannelsList(searchPattern))
         }
     }
 }

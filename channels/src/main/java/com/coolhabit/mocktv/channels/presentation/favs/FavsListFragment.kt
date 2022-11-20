@@ -4,16 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolhabit.mocktv.baseUI.adapter.ItemDecoration
 import com.coolhabit.mocktv.baseUI.presentation.BaseFragment
 import com.coolhabit.mocktv.channels.R
 import com.coolhabit.mocktv.channels.databinding.FragmentChannelsListBinding
-import com.coolhabit.mocktv.channels.databinding.FragmentFavsListBinding
-import com.coolhabit.mocktv.channels.presentation.ChannelsListViewModel
 import com.coolhabit.mocktv.channels.presentation.adapter.TvChannelAdapter
+import com.coolhabit.mocktv.channels.presentation.base.ChannelsBaseFragment
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
@@ -40,6 +41,7 @@ class FavsListFragment : BaseFragment(R.layout.fragment_channels_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val parentFrag = requireParentFragment() as ChannelsBaseFragment
 
         binding.rvChannels.apply {
             adapter = channelsAdapter
@@ -55,6 +57,28 @@ class FavsListFragment : BaseFragment(R.layout.fragment_channels_list) {
                     com.coolhabit.mocktv.baseUI.R.dimen.size_6,
                 )
             )
+        }
+
+        with(parentFrag.binding) {
+            searchBar.apply {
+                searchInput.setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                        viewModel.performSearch(searchInput.text.toString())
+                        true
+                    } else {
+                        false
+                    }
+                }
+
+                searchInput.doOnTextChanged { _, _, _, _ ->
+                    viewModel.performSearch(searchInput.text.toString())
+                }
+
+                searchInputLayout.setEndIconOnClickListener {
+                    searchInput.text?.clear()
+                    viewModel.initContent()
+                }
+            }
         }
 
         channelsAdapter.onCardClick = {
