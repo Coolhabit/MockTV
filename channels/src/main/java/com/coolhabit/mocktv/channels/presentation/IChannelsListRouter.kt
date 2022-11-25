@@ -4,5 +4,5 @@ import com.coolhabit.mocktv.baseUI.model.NavCommand
 
 interface IChannelsListRouter {
 
-    fun navigateToTvStream(channelId: Int): NavCommand
+    fun navigateToTvStream(channelId: Int, url: String): NavCommand
 }

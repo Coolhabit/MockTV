@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="deep_link_open_tv_stream_declaration">mocktv://mocktv/navigate/to/tv/stream?id={channelId}</string>
-    <string name="deep_link_open_tv_stream_value">mocktv://mocktv/navigate/to/tv/stream?id=%d</string>
+    <string name="deep_link_open_tv_stream_declaration">mocktv://mocktv/navigate/to/tv/stream?id={channelId}?url={url}</string>
+    <string name="deep_link_open_tv_stream_value">mocktv://mocktv/navigate/to/tv/stream?id=%d?url=%s</string>
 </resources>

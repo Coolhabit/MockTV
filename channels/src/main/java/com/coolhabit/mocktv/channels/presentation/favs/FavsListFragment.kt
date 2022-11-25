@@ -80,8 +80,8 @@ class FavsListFragment : BaseFragment(R.layout.fragment_channels_list) {
             }
         }
 
-        channelsAdapter.onCardClick = { id ->
-            viewModel.navigateToTvStream(id)
+        channelsAdapter.onCardClick = { id, url ->
+            viewModel.navigateToTvStream(id, url)
         }
         channelsAdapter.onFavClick = {
             viewModel.removeChannelFromFav(it)

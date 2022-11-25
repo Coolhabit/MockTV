@@ -8,12 +8,12 @@ import com.coolhabit.mocktv.channels.presentation.IChannelsListRouter
 
 class ChannelsListRouterImpl(private val context: Context) : IChannelsListRouter {
 
-    override fun navigateToTvStream(channelId: Int): NavCommand {
+    override fun navigateToTvStream(channelId: Int, url: String): NavCommand {
         return NavCommand.Deeplink(
             NavDeepLinkRequest.Builder.fromUri(
                 context.getString(
                     com.coolhabit.mocktv.stream.R.string.deep_link_open_tv_stream_value,
-                    channelId
+                    channelId, url
                 ).toUri()
             ).build()
         )

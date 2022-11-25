@@ -9,13 +9,13 @@ import com.google.android.material.imageview.ShapeableImageView
 class TvChannelViewHolder(
     private val binding: RvChannelItemBinding,
     private val onFavClick: (TvChannel) -> Unit,
-    private val onCardClick: (Int) -> Unit,
+    private val onCardClick: (Int, Int) -> Unit,
 ) :
     RecyclerView.ViewHolder(binding.root) {
 
     init {
         binding.root.setOnClickListener {
-            onCardClick.invoke(bindingAdapterPosition)
+            onCardClick.invoke(bindingAdapterPosition, bindingAdapterPosition)
         }
     }
 

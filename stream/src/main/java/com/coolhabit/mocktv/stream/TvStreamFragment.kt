@@ -67,7 +67,6 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
         }
 
         binding.qualityBtn.setOnClickListener {
-//            qualityPopUp?.show()
             val listView = binding.qualityListView.root
             if (listView.visibility == View.GONE) {
                 listView.visibility = View.VISIBLE
@@ -131,7 +130,7 @@ class TvStreamFragment : BaseFragment(R.layout.fragment_tv_stream), Player.Liste
         binding.videoView.player = player
         val mediaSource =
             HlsMediaSource.Factory(DefaultHttpDataSource.Factory())
-                .createMediaSource(MediaItem.fromUri(MOCK_URL))
+                .createMediaSource(MediaItem.fromUri(args.url))
         player?.setMediaSource(mediaSource)
         player?.seekTo(playbackPosition)
         player?.playWhenReady = playWhenReady

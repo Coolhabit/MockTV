@@ -12,6 +12,9 @@
         <argument
             android:name="channelId"
             app:argType="integer" />
+        <argument
+            android:name="url"
+            app:argType="string" />
         <deepLink
             android:id="@+id/open_tv_stream"
             app:uri="@string/deep_link_open_tv_stream_declaration" />

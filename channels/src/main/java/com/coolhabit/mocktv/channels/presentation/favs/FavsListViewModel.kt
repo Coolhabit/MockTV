@@ -45,7 +45,7 @@ class FavsListViewModel @Inject constructor(
         }
     }
 
-    fun navigateToTvStream(channelId: Int) {
-        navigateTo(router.navigateToTvStream(channelId))
+    fun navigateToTvStream(channelId: Int, url: String) {
+        navigateTo(router.navigateToTvStream(channelId, url))
     }
 }
